@@ -9,13 +9,19 @@ const webEmbedIdRafa = "w4ulsZRccwCCDI_N0AHlY";
 const webEmbedIdRoger = "aln2QYW1mCBoQW9X3EHvo";
 
 // Function to persist and restore global state
-const saveState = (key, value) => {
-  localStorage.setItem(key, JSON.stringify(value));
+const saveState = (key: string, value: any) => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
 };
 
-const loadState = (key, defaultValue) => {
-  const savedValue = localStorage.getItem(key);
-  return savedValue ? JSON.parse(savedValue) : defaultValue;
+const loadState = (key: string, defaultValue: any) => {
+  if (typeof window !== "undefined") {
+    const savedValue = localStorage.getItem(key);
+    
+    return savedValue ? JSON.parse(savedValue) : defaultValue;
+  }
+  return defaultValue;
 };
 
 export default function Home() {
@@ -42,7 +48,7 @@ export default function Home() {
     openEmbed(currentEmbedId);  // Open a new embed session based on the state
   }, [currentEmbedId, text]);  // Run when state changes
 
-  const handleEmbedChange = (embedId, newText) => {
+  const handleEmbedChange = (embedId: string, newText: string) => {
     // Update state
     setCurrentEmbedId(embedId);
     setText(newText);
