@@ -5,15 +5,14 @@ import { getAuth } from 'firebase/auth';
 // import { getAnalytics } from 'firebase/analytics'; // Uncomment if needed
 
 // Your web app's Firebase configuration
-// firebaseConfig.js or firebase.js
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  apiKey: "AIzaSyCw8VK8fwZ3j-F37soWqOwmVMnpUriPAd0",
+  authDomain: "sports-psychology-73806.firebaseapp.com",
+  projectId: "sports-psychology-73806",
+  storageBucket: "sports-psychology-73806.appspot.com",
+  messagingSenderId: "385413346956",
+  appId: "1:385413346956:web:f36b18d6cb102ce346ada9",
+  measurementId: "G-NHEJKJJ67B"
 };
 
 // Initialize Firebase
