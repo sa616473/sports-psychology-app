@@ -8,6 +8,8 @@ import federer from "../public/images/federer.jpg"
 import nadal from "../public/images/nadal.jpg";
 
 import Header from '../components/Header';
+import { Suspense } from 'react';
+
 
 
 const therapists = [
@@ -28,6 +30,8 @@ const TherapistSelectionPage = () => {
   };
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
+
     <div className="min-h-screen bg-gradient-to-b from-blue-200 to-green-200 text-black">
       <Header></Header>
 
@@ -56,7 +60,14 @@ const TherapistSelectionPage = () => {
         ))}
       </div>
     </div>
+    </Suspense>
   );
 };
 
-export default TherapistSelectionPage;
+export default function TherapistSelectionPageWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <TherapistSelectionPage/>
+    </Suspense>
+  );
+}

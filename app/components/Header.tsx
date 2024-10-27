@@ -3,6 +3,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { getAuth, onAuthStateChanged, signOut, User } from 'firebase/auth'; // Import Firebase Auth
 import { auth } from '../firebase/firebase'; // Adjust the path based on your setup
 import { useEffect, useState } from 'react';
+import { Suspense } from 'react';
+
 
 
 const Header = () => {
@@ -32,6 +34,7 @@ const Header = () => {
   };
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <header className="text-black p-4">
       <nav className="flex justify-between items-center">
         <div className="text-2xl font-bold">
@@ -67,6 +70,7 @@ const Header = () => {
         </div>
       </nav>
     </header>
+    </Suspense>
   );
 };
 

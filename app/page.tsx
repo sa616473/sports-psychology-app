@@ -3,6 +3,8 @@
 // app/page.tsx
 import { useRouter } from 'next/navigation';
 import Header from './components/Header';
+import { Suspense } from 'react';
+
 
 
 const moods = [
@@ -19,6 +21,8 @@ const HomePage = () => {
   };
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
+
     <div className="min-h-screen bg-gradient-to-b from-blue-200 to-green-200 text-black">
       {/* Header */}
       <Header />
@@ -44,6 +48,7 @@ const HomePage = () => {
         ))}
       </div>
     </div>
+    </Suspense>
   );
 };
 

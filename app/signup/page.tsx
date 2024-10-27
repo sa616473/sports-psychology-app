@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { auth } from "../firebase/firebase";
 import axios from 'axios';
 import Header from '../components/Header';
+import { Suspense } from 'react';
+
 
 interface FormData {
   name: string;
@@ -54,6 +56,8 @@ export default function SignUp() {
   };
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
+
     <div className="min-h-screen bg-gradient-to-b from-blue-200 to-green-200">
     <Header></Header>
 
@@ -138,5 +142,6 @@ export default function SignUp() {
       </div>
     </div>
     </div>
+    </Suspense>
   );
 }

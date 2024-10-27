@@ -11,6 +11,8 @@ import Header from '../components/Header';
 import Link from 'next/link';
 import axios from 'axios';
 import { getAuth } from "firebase/auth";
+import { Suspense } from 'react';
+
 
 
 
@@ -143,6 +145,8 @@ const ChatPage = () => {
 
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
+
     <div className="min-h-screen bg-gradient-to-b from-blue-200 to-green-200">
        <Header></Header>
     
@@ -174,7 +178,15 @@ const ChatPage = () => {
 
     </div>
     </div>
+      </Suspense>
   );
+
 };
 
-export default ChatPage;
+export default function ChatPageWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ChatPage />
+    </Suspense>
+  );
+}

@@ -5,6 +5,8 @@ import axios from "axios";
 import Header from "../components/Header";
 import { auth } from "../firebase/firebase"; // Adjust the path to your Firebase config
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { Suspense } from 'react';
+
 
 interface Calculation {
   word: string;
@@ -101,6 +103,8 @@ const Dashboard: React.FC = () => {
   }, [userData]);
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
+
     <div className="min-h-screen bg-gradient-to-b from-blue-200 to-green-200 mx-auto p-6">
         <Header></Header>
       <h1 className="text-3xl font-bold mb-6 text-center">Conversation Dashboard</h1>
@@ -158,6 +162,7 @@ const Dashboard: React.FC = () => {
         ))}
       </div>
     </div>
+    </Suspense>
   );
 };
 

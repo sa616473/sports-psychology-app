@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import Header from '../components/Header';
+import { Suspense } from 'react';
 
 // Define the structure of form data
 interface FormData {
@@ -43,6 +44,8 @@ export default function Login() {
   };
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
+
     <div className="min-h-screen bg-gradient-to-b from-blue-200 to-green-200 flex flex-col">
       <Header></Header>
       {/* Login Form */}
@@ -91,5 +94,6 @@ export default function Login() {
         </div>
       </div>
     </div>
+    </Suspense>
   );
 }
