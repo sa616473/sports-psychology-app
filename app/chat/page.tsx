@@ -123,7 +123,6 @@ const ChatPage = () => {
 
     //   const greeting = "Hello Saitejas, this is roger, I am your personal therapist today!"
 
-      // If-else logic to set the prompt based on mood
       let updatedPrompt = `
                         You are job is to act as my therapist. 
                         Currently I am in a ${mood} mood and would love to share my thoughts with you.
@@ -165,16 +164,16 @@ const ChatPage = () => {
       <p className="text-xl mb-6">You chose to talk to <strong>{therapist}</strong></p>
 
       {/* Dynamic Text Change Instruction */}
-      <p className="text-lg text-gray-700 mt-10 max-w-lg">
+      {/* <p className="text-lg text-gray-700 mt-10 max-w-lg">
         {prompt}
       </p>
-      <div className="font-medium text-2xl">{text}</div>
+      <div className="font-medium text-2xl">{text}</div> */}
 
 
       {/* Home Button */}
-      <Link href="/" className="mt-6 inline-block bg-white text-green-700 px-4 py-2 rounded shadow-lg">
+      {/* <Link href="/" className="mt-6 inline-block bg-white text-green-700 px-4 py-2 rounded shadow-lg">
         End
-      </Link>
+      </Link> */}
 
     </div>
     </div>

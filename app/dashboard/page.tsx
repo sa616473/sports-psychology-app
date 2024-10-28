@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "../components/Header";
-import { auth } from "../firebase/firebase"; // Adjust the path to your Firebase config
+import { auth } from "../firebase/firebase";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import { Suspense } from 'react';
 
