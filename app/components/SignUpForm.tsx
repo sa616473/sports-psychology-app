@@ -5,8 +5,10 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from 'next/navigation';
 import { auth } from "../firebase/firebase";
 import axios from 'axios';
-import Header from '../components/Header';
+import Header from './Header';
 import { Suspense } from 'react';
+import { Input, Button, Typography, Alert, } from "@material-tailwind/react";
+
 
 
 interface FormData {
@@ -15,7 +17,11 @@ interface FormData {
   password: string;
 }
 
-export default function SignUp() {
+interface SignUpFormProps {
+  onLoginClick: () => void;
+}
+
+const SignUpForm: React.FC<SignUpFormProps> = ({onLoginClick}) => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -58,73 +64,51 @@ export default function SignUp() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
 
-    <div className="min-h-screen bg-gradient-to-b from-blue-200 to-green-200">
-    <Header></Header>
-
-    <div className="min-h-screen bg-gradient-to-b from-blue-200 to-green-200 text-center flex flex-col justify-center items-center">
       
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
+      <div className="w-full max-w-md p-8 bg-white">
         <div className="text-center">
-          <h2 className="text-3xl font-bold mb-4 text-blue-gray-800">Join Us Today</h2>
-          <p className="text-lg font-normal text-blue-gray-600">Enter your email and password to register.</p>
+          <h2 className="text-3xl font-bold mb-4 text-blue-gray-800">Create an account</h2>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         <form onSubmit={handleSubmit} className="mt-8 mb-2 w-full">
           <div className="mb-4 flex flex-col gap-6">
             <div>
-              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
-                Name
-              </label>
               <input
                 type="text"
                 name="name"
                 id="name"
+                placeholder='Name'
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-blue-500 hover:border-blue-300 shadow-sm focus:shadow"
               />
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
               <input
                 type="email"
                 name="email"
                 id="email"
+                placeholder='Name@mail.com'
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-blue-500 hover:border-blue-300 shadow-sm focus:shadow"
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
               <input
                 type="password"
                 name="password"
                 id="password"
+                placeholder='Password'
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-blue-500 hover:border-blue-300 shadow-sm focus:shadow"
               />
             </div>
-          </div>
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              name="terms"
-              id="terms"
-              required
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
-              I agree to the <a href="#" className="underline">Terms and Conditions</a>
-            </label>
-          </div>
+          
+          
           <button
             type="submit"
             className="mt-6 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -132,16 +116,22 @@ export default function SignUp() {
             Register Now
           </button>
 
-          
-          <p className="text-center text-blue-gray-500 font-medium mt-4">
+                </div>
+                <Typography variant='paragraph' color="blue-gray" className="text-center mt-4" 
+          placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             Already have an account?
-            <a href="/login" className="text-gray-900 ml-1 underline">Sign in</a>
-          </p>
+            <button
+          type="button"
+          onClick={onLoginClick}
+          className="text-gray-900 ml-1 underline"
+        >Sign in
+        </button>
+        </Typography>
         </form>
       </div>
       </div>
-    </div>
-    </div>
     </Suspense>
   );
 }
+
+export default SignUpForm;

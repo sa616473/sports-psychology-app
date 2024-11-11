@@ -6,6 +6,8 @@ import Header from "../components/Header";
 import { auth } from "../firebase/firebase";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import { Suspense } from 'react';
+import Modal from "../components/Modal";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 
 interface Calculation {
@@ -40,6 +42,9 @@ const Dashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
+
 
 
   useEffect(() => {
@@ -72,11 +77,7 @@ const Dashboard: React.FC = () => {
         }
       );
       setUserData(response.data);
-      console.log(response.data)
-      console.log("print ddd")
-      console.log(userData)
     } catch (err) {
-      console.error("Error fetching user data:", err);
       setError("Error fetching user data");
     }
   };
@@ -85,11 +86,10 @@ const Dashboard: React.FC = () => {
   // Fetch conversations data
   useEffect(() => {
     const fetchData = async () => {
-        console.log("printing here xyz")
-        console.log(userData)
+
         if (userData && userData.user.userConversationAnalysisIds.length > 0) {
       try {
-        const response = await axios.post("https://api-x2eecmbifa-uc.a.run.app/getConversationsByIds", {
+        const response = await axios.post("http://localhost:8080/getConversationsByIds", {
           conversationIds: userData.user.userConversationAnalysisIds
         });
         setConversations(response.data.conversations);
@@ -102,67 +102,95 @@ const Dashboard: React.FC = () => {
     fetchData();
   }, [userData]);
 
+  const openModal = (conversation: Conversation) => {
+    setSelectedConversation(conversation);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedConversation(null);
+    setIsModalOpen(false);
+  };
+
   return (
+    <ProtectedRoute>
     <Suspense fallback={<div>Loading...</div>}>
 
     <div className="min-h-screen bg-gradient-to-b from-blue-200 to-green-200 mx-auto p-6">
         <Header></Header>
-      <h1 className="text-3xl font-bold mb-6 text-center">Conversation Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">NLP Analysis Dashboard</h1>
       {error && <p className="text-red-500 text-center">{error}</p>}
-      
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead>
-            <tr>
-              <th className="py-2 px-4 border-b">ID</th>
-              <th className="py-2 px-4 border-b">User ID</th>
-              <th className="py-2 px-4 border-b">Score</th>
-              <th className="py-2 px-4 border-b">Comparative</th>
-              <th className="py-2 px-4 border-b">Positive Words</th>
-              <th className="py-2 px-4 border-b">Negative Words</th>
-              <th className="py-2 px-4 border-b">Timestamp</th>
-            </tr>
-          </thead>
+          <div
+          className="relative flex flex-col w-full h-full overflow-scroll text-gray-700 bg-white shadow-md rounded-xl bg-clip-border">
+  <table className="w-full text-left table-auto min-w-max">
+    <thead>
+      <tr>
+        <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+          <p className="block font-sans text-lg antialiased font-normal leading-none text-blue-gray-900 opacity-70">
+          Score
+          </p>
+        </th>
+        <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+          <p className="block font-sans text-lg antialiased font-normal leading-none text-blue-gray-900 opacity-70">
+          Comparative Score
+          </p>
+        </th>
+        <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+          <p className="block font-sans text-lg antialiased font-normal leading-none text-blue-gray-900 opacity-70">
+            Positive Words
+          </p>
+        </th>
+        <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+          <p className="block font-sans text-lg antialiased font-normal leading-none text-blue-gray-900 opacity-70">
+            Negative Words
+          </p>
+        </th>
+        <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+          <p className="block font-sans text-lg antialiased font-normal leading-none text-blue-gray-900 opacity-70">
+            Time (MM/DD/YYYY)
+          </p>
+        </th>
+      </tr>
+    </thead>
+    <tbody></tbody>
           <tbody>
             {conversations.map((conversation) => (
-              <tr key={conversation.id} className="hover:bg-gray-100">
-                <td className="py-2 px-4 border-b">{conversation.id}</td>
-                <td className="py-2 px-4 border-b">{conversation.userId}</td>
+              <tr 
+              key={conversation.id}
+              onClick={() => openModal(conversation)} 
+              className="hover:bg-gray-100"
+              >
                 <td className="py-2 px-4 border-b">{conversation.score}</td>
                 <td className="py-2 px-4 border-b">{conversation.comparative}</td>
                 <td className="py-2 px-4 border-b">{conversation.positive.join(", ")}</td>
                 <td className="py-2 px-4 border-b">{conversation.negative.join(", ")}</td>
                 <td className="py-2 px-4 border-b">{new Date(conversation.timestamp).toLocaleString()}</td>
+                
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      <div className="mt-6">
-        {conversations.map((conversation) => (
-          <div key={conversation.id} className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
-            <h2 className="font-semibold text-lg">Conversation ID: {conversation.id}</h2>
-            <p>User ID: {conversation.userId}</p>
-            <p>Score: {conversation.score}</p>
-            <p>Comparative: {conversation.comparative}</p>
-            <p>Positive Words: {conversation.positive.join(", ")}</p>
-            <p>Negative Words: {conversation.negative.join(", ")}</p>
-            <p>Timestamp: {new Date(conversation.timestamp).toLocaleString()}</p>
-            
-            <h3 className="font-semibold mt-2">Detailed Calculation:</h3>
-            <ul className="list-disc list-inside">
-              {conversation.calculation.map((calc, index) => (
-                <li key={index}>
-                  Word: <span className="font-semibold">{calc.word}</span>, Score: {calc.score}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
+      {/* Modal for Detailed Calculation */}
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+          {selectedConversation && (
+            <>
+              <h6 className="font-bold text-lg mb-4">Detailed Calculation </h6>
+              {/* <p className="font-italic text-lg mb-4">{selectedConversation.timestamp}</p> */}
+              <ul className="list-disc list-inside">
+                {selectedConversation.calculation.map((calc, index) => (
+                  <li key={index}>
+                    Word: <span className="font-semibold">{calc.word}</span>, Score: {calc.score}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </Modal>
     </div>
     </Suspense>
+    </ProtectedRoute>
   );
 };
 

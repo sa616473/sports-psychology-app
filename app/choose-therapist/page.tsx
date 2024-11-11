@@ -20,13 +20,11 @@ const therapists = [
 
 const TherapistSelectionPage = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const mood  = searchParams.get('mood');  // Get the mood from the query params
 
   const handleTherapistSelection = (therapist: string) => {
-    alert(`You selected ${therapist}'s voice for ${mood} mood`);
+    // alert(`You selected ${therapist}'s voice for ${mood} mood`);
     // You can handle further logic here (e.g., redirect to a chat)
-    router.push(`/chat?therapist=${therapist}&mood=${mood}`);
+    router.push(`/chat?therapist=${therapist}`);
   };
 
   return (
@@ -36,7 +34,6 @@ const TherapistSelectionPage = () => {
       <Header></Header>
 
       <div className="text-center my-16">
-        <h2 className="text-4xl font-bold">You are feeling {mood}</h2>
         <p className="text-xl mt-4">Choose the therapist you want to talk to:</p>
       </div>
 
@@ -44,18 +41,29 @@ const TherapistSelectionPage = () => {
         {therapists.map((therapist) => (
           <div
             key={therapist.name}
-            className="p-10 bg-gray-800 rounded-lg text-center cursor-pointer text-white"
+            className="p-10 bg-white rounded-lg text-center cursor-pointer text-white"
             onClick={() => handleTherapistSelection(therapist.name)}
           >
-                    <Image
+          <div className="w-full max-w-xs mx-auto rounded-lg overflow-hidden mb-4">
+
+          <Image
           src={therapist.imageUrl}
           alt={therapist.name}
-          width={128} // Provide a width and height when using the Image component
-          height={128}
-          className="rounded-full mx-auto mb-4"
+          width={256} // Provide a width and height when using the Image component
+          height={256}
+          className="object-cover w-full h-full"
         />
-            <h3 className="text-2xl font-bold mb-4">{therapist.name}</h3>
-            <button className="bg-white text-black px-4 py-2 rounded">Select</button>
+        </div>
+        <div className="p-6 text-center">
+        <h4 className="mb-1 text-xl font-semibold text-slate-800">
+            {therapist.name}
+            </h4>
+        </div>
+            <div className="flex justify-center p-6 pt-2 gap-7">
+              <button className="min-w-32  rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
+                Select
+              </button>
+            </div>
           </div>
         ))}
       </div>

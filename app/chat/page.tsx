@@ -12,6 +12,8 @@ import Link from 'next/link';
 import axios from 'axios';
 import { getAuth } from "firebase/auth";
 import { Suspense } from 'react';
+import { useUserInput } from '../components/UserInputContext';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 
 
@@ -22,7 +24,6 @@ type TherapistName = "Novak Djokovic" | "Rafael Nadal" | "Roger Federer";
 
 const ChatPage = () => {
   const searchParams = useSearchParams();
-  const mood = searchParams.get('mood');
   const therapist = searchParams.get('therapist') as TherapistName | ""; // Get the therapist and mood from the query params
   const sentiment = new Sentiment();
 
@@ -31,6 +32,7 @@ const ChatPage = () => {
   const [webEmbedId, setWebEmbedId] = useState<string | null>(null);
   const [prompt, setPrompt] = useState<string>("");
   const [text, setText] = useState("Change this text");
+  const { userInput } = useUserInput();
 
   const therapistImages  = {
     "Novak Djokovic": djokovic,
@@ -125,7 +127,7 @@ const ChatPage = () => {
 
       let updatedPrompt = `
                         You are job is to act as my therapist. 
-                        Currently I am in a ${mood} mood and would love to share my thoughts with you.
+                        Currently This is what is going through my head. ${userInput}.
                         once the conversation is over update the "change-text" with the user conversation. 
                         Call "change-text" IMMEDIATELY after the conversation is over`;
 
@@ -139,45 +141,43 @@ const ChatPage = () => {
         });  // Opens the web embed for the selected therapist
       }
     }
-  }, [webEmbedId, therapist, mood]);
+  }, [webEmbedId, therapist]);
 
 
 
   return (
+    <ProtectedRoute>
     <Suspense fallback={<div>Loading...</div>}>
 
     <div className="min-h-screen bg-gradient-to-b from-blue-200 to-green-200">
        <Header></Header>
     
     <div className="min-h-screen bg-gradient-to-b from-blue-200 to-green-200 text-center flex flex-col justify-center items-center">
-     
+    <div className="w-64 h-96 mx-auto rounded-lg overflow-hidden mb-4">
+
       {/* Display therapist image */}
         <Image
           src={therapistImage}
           alt={therapist}
-          className="rounded-full w-40 h-40 mb-6"
+          width={256} // Provide a width and height when using the Image component
+          height={256}
+          className="object-cover w-full h-full"
         />
+        </div>
 
       
-      <h1 className="text-3xl font-bold mb-4">Chat Page</h1>
-      <p className="text-xl mb-6">You are feeling <strong>{mood}</strong></p>
-      <p className="text-xl mb-6">You chose to talk to <strong>{therapist}</strong></p>
-
-      {/* Dynamic Text Change Instruction */}
-      {/* <p className="text-lg text-gray-700 mt-10 max-w-lg">
-        {prompt}
-      </p>
-      <div className="font-medium text-2xl">{text}</div> */}
-
-
-      {/* Home Button */}
-      {/* <Link href="/" className="mt-6 inline-block bg-white text-green-700 px-4 py-2 rounded shadow-lg">
-        End
-      </Link> */}
+      <h4 className="text-3xl font-bold mb-4">Chat with</h4>
+      {/* <p className="text-xl mt-4 italic">{userInput}</p> */}
+      <div className="p-6 text-center">
+        <h4 className="mb-1 text-xl font-semibold text-slate-800">
+            {therapist}
+            </h4>
+        </div>
 
     </div>
     </div>
       </Suspense>
+      </ProtectedRoute>
   );
 
 };
