@@ -89,7 +89,7 @@ const Dashboard: React.FC = () => {
 
         if (userData && userData.user.userConversationAnalysisIds.length > 0) {
       try {
-        const response = await axios.post("http://localhost:8080/getConversationsByIds", {
+        const response = await axios.post("https://api-x2eecmbifa-uc.a.run.app/getConversationsByIds", {
           conversationIds: userData.user.userConversationAnalysisIds
         });
         setConversations(response.data.conversations);
