@@ -50,7 +50,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({onLoginClick}) => {
 
       if (response.status === 201) {
         console.log("User registered:", userCredential.user);
-        router.push('/');
+        router.push('/feeling');
       } else {
         setError("An error occurred during registration.");
       }

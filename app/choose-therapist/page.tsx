@@ -13,9 +13,9 @@ import { Suspense } from 'react';
 
 
 const therapists = [
-  { name: 'Novak Djokovic', imageUrl: djokovic },
-  { name: 'Roger Federer', imageUrl: federer },
-  { name: 'Rafael Nadal', imageUrl: nadal},
+  { name: 'Novak Djokovic', imageUrl: djokovic, description:"This therapist is super chatty and configured For casual laid-back conversations, like you are talking to a friend."  },
+  { name: 'Roger Federer', imageUrl: federer, description: "This therapist is configured to assume and impersonate identity."},
+  { name: 'Rafael Nadal', imageUrl: nadal, description:"This therapist is configured to be more polite, formal, staying on task, and assisting." },
 ];
 
 const TherapistSelectionPage = () => {
@@ -57,7 +57,10 @@ const TherapistSelectionPage = () => {
         <div className="p-6 text-center">
         <h4 className="mb-1 text-xl font-semibold text-slate-800">
             {therapist.name}
-            </h4>
+        </h4>
+        <p className="text-base text-slate-600 mt-4 font-light ">
+          {therapist.description}
+        </p>
         </div>
             <div className="flex justify-center p-6 pt-2 gap-7">
               <button className="min-w-32  rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
